@@ -81,14 +81,13 @@
 
             <li onclick="togglePanel('funcionarios')">Funcionários</li>
             <div id="funcionarios" class="panel">
-                <button onclick="imprimirSalarios()">Imprimir Salários</button>
+                <button onclick="imprimirSalarios()">Informações</button>
                 <p id="resultadoFuncionarios"></p>
             </div>
         </ul>
     </div>
     
     <script>
-        // Toggle panel visibility
         function togglePanel(id) {
             let panel = document.getElementById(id);
             panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
@@ -132,21 +131,28 @@
 
         function verificarPalpite() {
             let palpite = parseInt(document.getElementById("palpite").value);
+            let resultado = document.getElementById("resultadoJogo");
+            
+            if (isNaN(palpite)) {
+                resultado.innerText = "Digite um número válido!";
+                return;
+            }
+            
             if (palpite < numeroSecreto) {
-                document.getElementById("resultadoJogo").innerText = "Muito baixo!";
+                resultado.innerText = "Muito baixo! Tente novamente.";
             } else if (palpite > numeroSecreto) {
-                document.getElementById("resultadoJogo").innerText = "Muito alto!";
+                resultado.innerText = "Muito alto! Tente novamente.";
             } else {
-                document.getElementById("resultadoJogo").innerText = "Parabéns, você acertou!";
+                resultado.innerText = "Parabéns! Você acertou o número!";
+                numeroSecreto = Math.floor(Math.random() * 100) + 1;
             }
         }
 
         // Classes de funcionários
         class Funcionario {
-            constructor(nome, idade, salario) {
+            constructor(nome, idade) {
                 this.nome = nome;
                 this.idade = idade;
-                this.salario = salario;
             }
         }
 
@@ -183,9 +189,10 @@
             let pf = new FuncionarioPF(gerarNomeAleatorio(), Math.floor(Math.random() * 50) + 20, Math.floor(Math.random() * 6000) + 3000);
             
             document.getElementById("resultadoFuncionarios").innerText = 
-                `Funcionário PJ: ${pj.nome}, Idade: ${pj.idade}, Horas Trabalhadas: ${pj.horasTrabalhadas}, Salário: R$${pj.calcularSalario()}` + "\n" +
-                `Funcionário PF: ${pf.nome}, Idade: ${pf.idade}, Salário: R$${pf.calcularSalario()}`;
+                `Funcionário PJ: ${pj.nome}, Idade: ${pj.idade}, Horas Trabalhadas: ${pj.horasTrabalhadas}, Salário: R$${pj.calcularSalario().toFixed(2)}` + "\n" +
+                `Funcionário PF: ${pf.nome}, Idade: ${pf.idade}, Salário: R$${pf.calcularSalario().toFixed(2)}`;
         }
     </script>
 </body>
 </html>
+
